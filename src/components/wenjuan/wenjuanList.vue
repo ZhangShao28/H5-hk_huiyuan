@@ -16,7 +16,7 @@
                   <div class="">{{ item.end_time }}</div>
                 </div>
               </div>
-              <div class="ic_more" v-if="item.type == 1">
+              <div class="ic_more" v-if="item.type == 1||item.type == 2">
                 <img src="/static/img/ic_more.png" alt="" />
               </div>
             </div>
@@ -90,7 +90,8 @@ export default {
         this.$router.push({
           path: "/wenjuanDetail",
           query: {
-            id: item.id
+            id: item.id,
+            type:item.type
           }
         });
       }

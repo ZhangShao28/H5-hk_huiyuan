@@ -2,45 +2,47 @@
     <div id="wenjuan">
       <div class="head" v-if="isSubmit">
         <p class="title">{{dataInfo.title}}</p>
-        <p class="sub">{{dataInfo.desc}}</p>
+        <p class="sub" v-html="dataInfo.desc"></p>
       </div>
       <div class="content" v-if="isSubmit">
         <div class="item" v-for="(item,index) in dataList" :key="index">
           <div>
             {{index+1}}．{{item.name}} <span v-if="item.is_required==1" style="color:red">*</span>
           </div>
-          <p class="sub" v-if="item.remark">{{item.remark}}</p>
+          <p class="sub" v-if="item.remark" v-html="item.remark"></p>
           <div v-if="item.type=='radio'"> 
             <yd-radio-group size="16" class="radio" color='#4285F4' v-model="item.value">
-                <yd-radio :val="item1" v-for="(item1,index1) in item.inputList" :key="index1">{{item1}}</yd-radio>
+                <yd-radio :disabled="type==2?true:false" :val="item1" v-for="(item1,index1) in item.inputList" :key="index1">{{item1}}</yd-radio>
             </yd-radio-group>
           </div>
           <div v-if="item.type=='checkbox'"> 
             <yd-checkbox-group size="16" class="checkbox" color='#4285F4' v-model="item.value">
-                <yd-checkbox :val="item2" v-for="(item2,index2) in item.inputList" :key="index2">{{item2}}</yd-checkbox>
+                <yd-checkbox :disabled="type==2?true:false" :val="item2" v-for="(item2,index2) in item.inputList" :key="index2">{{item2}}</yd-checkbox>
             </yd-checkbox-group>
           </div>
           <div v-if="item.type=='text'"> 
-            <yd-cell-group>
+            <yd-cell-group v-if="type!=2">
               <yd-cell-item>
                 <yd-input slot="right" v-model="item.value" placeholder="請輸入內容"></yd-input>
               </yd-cell-item>
             </yd-cell-group>
+            <p class="text" v-if="type==2">{{item.value}}</p>
           </div>
           <div v-if="item.type=='textarea'"> 
-            <yd-cell-group >
+            <yd-cell-group v-if="type!=2">
                 <yd-cell-item>
-                    <yd-textarea slot="right" v-model="item.value" placeholder="請輸入內容" ></yd-textarea>
+                    <yd-textarea slot="right" :disabled="type==2?true:false" v-model="item.value" placeholder="請輸入內容" ></yd-textarea>
                 </yd-cell-item>
             </yd-cell-group>
+            <p class="text" v-if="type==2">{{item.value}}</p>
           </div>
         </div>
       </div>
       <div class="content" v-if="!isSubmit">
         <p class="text_center">感謝您的參與，謝謝！</p>
       </div>
-      <x-button class="Btn_Login" @click.native="submit"  text="提 交" v-if="isSubmit"></x-button>
-      <x-button class="Btn_Login" @click.native="back"  text="返 回" v-if="!isSubmit"></x-button>
+      <x-button class="Btn_Login" @click.native="submit"  text="提 交" v-if="isSubmit&type!=2"></x-button>
+      <x-button class="Btn_Login" type="default" @click.native="back"  text="返 回" v-if="!isSubmit||type==2"></x-button>
     </div>
 </template>
 <script>
@@ -55,12 +57,16 @@
       return {
         isSubmit:true,
         dataInfo:{},
-        dataList:[]
+        dataList:[],
+        aaaa:'我是测试备注</br>我是测试备注'
       }
     },
     computed: {
       id(){
         return this.$route.query.id
+      },
+      type(){
+        return this.$route.query.type
       }
     },
     created(){
@@ -158,16 +164,21 @@
             this.dataInfo = data.data
             this.dataList = data.dataList
             .map(item=>{
-              let type = ''
-              if(item.type=='checkbox'){
-                type=[]
+              if(!item.value||item.value.length==0){
+                let type = ''
+                if(item.type=='checkbox'){
+                  type=[]
+                }
+                if(item.type=='radio'){
+                  type=item.inputList[0]
+                }
+                return Object.assign({},item,{value:type})
+              }else{
+                return item
               }
-              if(item.type=='radio'){
-                type=item.inputList[0]
-              }
-              return Object.assign({},item,{value:type})
             })
-            console.log(this.dataList)
+            console.log('ss',this.dataList)
+            document.title=this.dataInfo.title
           } else {
             that.$dialog.toast({
               mes: response.data.msg,
@@ -215,6 +226,10 @@
         }
         .item{
           padding-top: 6px;
+          .text{
+            margin-top: 8px;
+            color: #666;
+          }
         }
         .sub{
           color:#888;

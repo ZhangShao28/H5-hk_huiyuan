@@ -17,7 +17,7 @@
                 <el-input placeholder="請輸入手提電話" v-model="inputValue" id="mobile-phone" pattern="[0-9]*"
                           keyboard="number" type="number" name="mobile">
                     <img v-for="(item,index) in country_icon" :key="index" v-if="index == country_id" slot="prepend"
-                         class="country_icon" :src="item.img_url" alt="">
+                        class="country_icon" :src="item.img_url" alt="">
                     <el-select v-model="selvalue" slot="prepend" @change="changes">
                         <el-option
                                 v-for="item in options"
@@ -67,23 +67,26 @@
           value: '852',
           label: '852',
           icon: '<img style="width: 18px;margin-right: 5px;position:relative;top: -2px;" src="/static/img/ic_login_hk.png" alt="">'
-        }, {
-          value: '853',
-          label: '853',
-          icon: '<img style="width: 18px;margin-right: 5px;position:relative;top: -2px;" src="/static/img/ic_login_am.png" alt="">'
-        }, {
-          value: '86',
-          label: '86',
-          icon: '<img style="width: 18px;margin-right: 5px;position:relative;top: -2px;" src="/static/img/ic_login_china.png" alt="">'
-        }],
+        }
+        // , {
+        //   value: '853',
+        //   label: '853',
+        //   icon: '<img style="width: 18px;margin-right: 5px;position:relative;top: -2px;" src="/static/img/ic_login_am.png" alt="">'
+        // }, {
+        //   value: '86',
+        //   label: '86',
+        //   icon: '<img style="width: 18px;margin-right: 5px;position:relative;top: -2px;" src="/static/img/ic_login_china.png" alt="">'
+        // }
+        ],
         country_icon: [
           {
             img_url: '/static/img/ic_login_hk.png'
-          }, {
-            img_url: '/static/img/ic_login_china.png'
-          }, {
-            img_url: '/static/img/ic_login_am.png'
-          },
+          }
+          // , {
+          //   img_url: '/static/img/ic_login_china.png'
+          // }, {
+          //   img_url: '/static/img/ic_login_am.png'
+          // },
         ],
         country_id: '0',
         selvalue: '852',

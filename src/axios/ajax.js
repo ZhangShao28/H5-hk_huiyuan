@@ -7,6 +7,7 @@ import { cookie} from 'vux'
 axios.defaults.baseURL = process.env.API_ROOT; // 全局的地址
 axios.defaults.timeout = 10000;
 axios.defaults.headers.token = cookie.get('token')
+// axios.defaults.headers.token = '58e7LAmY+VI4dMM346oDProI2LB+aQxDbhJIWB0Lndds2zXNzBFw'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
